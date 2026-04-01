@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>My Bookings</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <h2 class="title">My Bookings</h2>
+
+    <div class="booking"></div>
+
+    <script>
+
+        let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+        let container = document.querySelector(".booking");
+
+        if (bookings.length > 0) {
+
+            container.innerHTML = "";
+
+            bookings.forEach(b => {
+
+                container.innerHTML += `
+<p><b>Machine:</b> ${b.machine}</p>
+<p><b>Name:</b> ${b.name}</p>
+<p><b>Mobile:</b> ${b.mobile}</p>
+<p><b>Date:</b> ${b.date}</p>
+<p><b>Farm Size:</b> ${b.acres || "-"} Acres</p>
+<p><b>Rate:</b> ₹${b.rate} per acre</p>
+<p><b>Status:</b> ${b.status}</p>
+<hr>
+`;
+
+            });
+
+        } else {
+
+            container.innerHTML = "No bookings yet.";
+
+        }
+
+    </script>
+
+    <div class="nav">
+        <a href="index.html">Vehicles</a>
+        <a href="bookings.html">Bookings</a>
+        <a href="account.html">Account</a>
+    </div>
+
+</body>
+
+</html>

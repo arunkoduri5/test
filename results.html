@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Available Equipment</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+    <h2 class="title">Available Machines</h2>
+
+    <div id="results"></div>
+
+    <script>
+
+        let search = JSON.parse(localStorage.getItem("search"));
+        let container = document.getElementById("results");
+
+        if (search && search.type === "tractor") {
+
+            container.innerHTML = `
+
+<div class="card">
+<h3>Mahindra Tractor</h3>
+<p>Rate: ₹800 per acre</p>
+<button onclick="bookMachine('Mahindra Tractor')">Book</button>
+</div>
+
+<div class="card">
+<h3>Sonalika Tractor</h3>
+<p>Rate: ₹750 per acre</p>
+<button onclick="bookMachine('Sonalika Tractor')">Book</button>
+</div>
+
+`;
+
+        } else {
+
+            container.innerHTML = "No machines found";
+
+        }
+
+    </script>
+
+    <script src="js/script.js"></script>
+
+</body>
+
+</html>

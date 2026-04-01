@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Login</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+    <h2 class="title">Farmer Login</h2>
+
+    <div class="form">
+
+        <input type="text" placeholder="Enter Mobile Number">
+
+        <button onclick="login()">Login</button>
+
+    </div>
+
+    <script>
+
+        function login() {
+
+            localStorage.setItem("loggedin", "true");
+
+            alert("Login Successful");
+
+            window.location.href = "index.html";
+
+        }
+
+    </script>
+    <div class="nav">
+
+        <a href="index.html">Vehicles</a>
+        <a href="bookings.html">Bookings</a>
+        <a href="account.html">Account</a>
+
+    </div>
+</body>
+
+</html>
