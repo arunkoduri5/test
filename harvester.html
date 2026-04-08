@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Harvester Booking</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+    <h2 class="title">Harvester Booking</h2>
+
+    <div class="form">
+
+        <label>Crop</label>
+
+        <select>
+            <option>Rice</option>
+            <option>Wheat</option>
+            <option>Maize</option>
+        </select>
+
+        <label>Acres of Crop</label>
+
+        <input id="acres" type="number" placeholder="Enter acres">
+
+        <label>Farm Location</label>
+
+        <input type="text" placeholder="Enter location">
+
+        <label>Required Date</label>
+
+        <input id="date" type="date">
+
+        <button onclick="searchEquipment('harvester')">Search</button>
+    </div>
+    
+    <script src="js/script.js"></script>
+</body>
+
+</html>

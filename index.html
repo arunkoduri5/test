@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Farm Equipment Booking</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+<script>
+
+    if (!localStorage.getItem("loggedin")) {
+        window.location.href = "login.html"
+    }
+
+</script>
+
+<body>
+
+    <h1 class="title">Book Farm Equipment</h1>
+
+    <div class="card" onclick="location.href='tractor.html'">
+
+        <div>
+            <h2>Tractor</h2>
+            <p>Ideal for plowing, tilling and planting.</p>
+        </div>
+
+        <img src="images/tractor.png" class="card-icon">
+
+    </div>
+
+    <div class="card" onclick="location.href='harvester.html'">
+
+        <div>
+            <h2>Harvester</h2>
+            <p>Used for harvesting wheat and rice.</p>
+        </div>
+
+        <img src="images/harvester.png" class="card-icon">
+
+    </div>
+
+    <div class="card" onclick="location.href='sugarcane.html'">
+
+        <div>
+            <h2>Sugarcane Harvester</h2>
+            <p>Special machine for sugarcane harvesting.</p>
+        </div>
+
+        <img src="images/sugarcane.png" class="card-icon">
+
+    </div>
+
+    <div class="card" onclick="location.href='jcb.html'">
+
+        <div>
+            <h2>JCB</h2>
+            <p>Used for digging and heavy work.</p>
+        </div>
+
+        <img src="images/jcb.png" class="card-icon">
+
+    </div>
+    <div class="card" onclick="location.href='spraying.html'">
+
+        <div>
+            <h2>Spraying</h2>
+            <p>Book drone or manual spraying for crops.</p>
+        </div>
+
+        <img src="images/spraying.png" class="card-icon">
+
+    </div>
+    <div class="card" onclick="location.href='equipment.html'">
+
+        <div>
+            <h2>Farm Equipment & Machinery</h2>
+            <p>Book agricultural implements for farm work.</p>
+        </div>
+
+        <img src="images/equipment.png" class="card-icon">
+
+    </div>
+
+    
+    
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>

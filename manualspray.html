@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Manual Spraying</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+    <h2 class="title">Manual Spraying</h2>
+
+    <div class="form">
+
+        <label>Machine</label>
+        <input type="text" value="STIHL SR430" disabled>
+
+        <label>Farm Size</label>
+        <input type="text" placeholder="Enter farm size">
+
+        <label>Location</label>
+        <input type="text" placeholder="Enter farm location">
+
+        <label>Required Hours</label>
+        <input type="number" placeholder="Enter hours">
+
+        <label>Date</label>
+        <input id="date" type="date">
+
+        <button onclick="searchEquipment('sprayer')">Search</button>
+
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>

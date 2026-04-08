@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Account</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <h2 class="title">My Account</h2>
+
+    <div class="form" id="accountProfile" style="padding-top: 30px; animation-delay: 0.1s;">
+        <!-- Injected via script.js loadAccount() -->
+    </div>
+
+    <!-- Quick Links Wrapper mimicking modern Native App Settings layout -->
+    <div class="form" style="padding: 10px 20px; gap: 0; animation-delay: 0.2s;">
+        <div style="color: var(--primary); font-weight: 600; padding: 18px 10px; border-bottom: 2px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+            Help Center & Support
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </div>
+        <div style="color: var(--primary); font-weight: 600; padding: 18px 10px; border-bottom: 2px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+            Terms & Conditions
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </div>
+        <div style="color: var(--primary); font-weight: 600; padding: 18px 10px; display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+            Privacy Policy
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </div>
+    </div>
+
+    <div style="width: 90%; max-width: 500px; margin: 30px auto; animation: fadeUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; animation-delay: 0.3s;">
+        <button class="btn-danger" onclick="logout()">Logout Securely</button>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
