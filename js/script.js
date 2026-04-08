@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
         loadBookings();
     } else if (window.location.pathname.includes('account.html')) {
         loadAccount();
+    } else if (window.location.pathname.includes('equipment.html')) {
+        initEquipmentPage();
     }
 });
 
@@ -112,6 +114,7 @@ async function login() {
 function searchEquipment(type) {
     const dateInput = document.getElementById("date");
     const acresInput = document.getElementById("acres");
+    const equipmentTargetInput = document.getElementById("equipmentTarget");
 
     if (!dateInput || !dateInput.value) {
         showToast("Please select a date");
@@ -120,8 +123,17 @@ function searchEquipment(type) {
     
     const date = dateInput.value;
     const acres = acresInput ? acresInput.value : '';
+    const equipmentTarget = equipmentTargetInput ? equipmentTargetInput.value.trim() : '';
+    if (type === "equipment" && !equipmentTarget) {
+        showToast("Please select equipment target");
+        return;
+    }
 
-    window.location.href = `results.html?type=${type}&date=${date}&acres=${acres}`;
+    let url = `results.html?type=${encodeURIComponent(type)}&date=${encodeURIComponent(date)}&acres=${encodeURIComponent(acres)}`;
+    if (equipmentTarget) {
+        url += `&target=${encodeURIComponent(equipmentTarget)}`;
+    }
+    window.location.href = url;
 }
 
 async function loadResults() {
@@ -129,6 +141,7 @@ async function loadResults() {
     const type = params.get("type");
     const date = params.get("date");
     const acres = params.get("acres");
+    const target = (params.get("target") || "").trim().toLowerCase();
 
     const list = document.getElementById("machineList");
     if (!list) return;
@@ -140,12 +153,19 @@ async function loadResults() {
 
         list.innerHTML = "";
 
-        if (equipment.length === 0) {
+        let filteredEquipment = equipment;
+        if (target) {
+            filteredEquipment = equipment.filter(machine =>
+                (machine.name || "").toLowerCase().includes(target)
+            );
+        }
+
+        if (filteredEquipment.length === 0) {
             list.innerHTML = "<p style='text-align:center;'>No equipment found.</p>";
             return;
         }
 
-        equipment.forEach(machine => {
+        filteredEquipment.forEach(machine => {
             const div = document.createElement("div");
             div.className = "card";
             div.innerHTML = `
@@ -160,6 +180,54 @@ async function loadResults() {
         });
     } catch (err) {
         list.innerHTML = "<p style='text-align:center; color:red;'>Error loading data</p>";
+    }
+}
+
+function initEquipmentPage() {
+    const bookingForm = document.getElementById("equipmentBookingForm");
+    const targetInput = document.getElementById("equipmentTarget");
+    const selectedInput = document.getElementById("selectedEquipmentName");
+
+    if (bookingForm) {
+        bookingForm.style.display = "none";
+    }
+    if (targetInput) {
+        targetInput.value = "";
+    }
+    if (selectedInput) {
+        selectedInput.value = "";
+    }
+}
+
+function selectEquipmentTarget(target, cardElement) {
+    const targetInput = document.getElementById("equipmentTarget");
+    if (!targetInput) return;
+
+    targetInput.value = target;
+
+    document.querySelectorAll("#equipmentTargetCards .equipment-option").forEach(card => {
+        card.classList.remove("selected");
+    });
+
+    if (cardElement) {
+        cardElement.classList.add("selected");
+    }
+}
+
+function prepareEquipmentBooking(target, buttonElement) {
+    const cardElement = buttonElement ? buttonElement.closest(".equipment-option") : null;
+    selectEquipmentTarget(target, cardElement);
+
+    const bookingForm = document.getElementById("equipmentBookingForm");
+    const selectedInput = document.getElementById("selectedEquipmentName");
+
+    if (selectedInput) {
+        selectedInput.value = target;
+    }
+
+    if (bookingForm) {
+        bookingForm.style.display = "flex";
+        bookingForm.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 }
 

@@ -68,6 +68,60 @@ function initDb() {
                 console.log('Seeded database with initial equipment.');
             }
         });
+
+        // Ensure Farm Equipment & Machinery has 2-3 options for every target (idempotent).
+        const farmEquipmentVariants = [
+            { name: 'Power Tiller - Mahindra Yuvraj 215', type: 'equipment', price: 420, loc: 'Village Tool Bank A', img: 'images/equipment.png' },
+            { name: 'Power Tiller - VST Shakti 130 DI', type: 'equipment', price: 450, loc: 'Village Tool Bank B', img: 'images/equipment.png' },
+            { name: 'Power Tiller - KMW Mega T15', type: 'equipment', price: 400, loc: 'Village Tool Bank C', img: 'images/equipment.png' },
+
+            { name: 'Seed Drill - Dasmesh Multi-Crop SD100', type: 'equipment', price: 360, loc: 'Village Tool Bank A', img: 'images/equipment.png' },
+            { name: 'Seed Drill - Fieldking FKSD 9 Tyne', type: 'equipment', price: 340, loc: 'Village Tool Bank B', img: 'images/equipment.png' },
+            { name: 'Seed Drill - Landforce Smart Drill 11 Tyne', type: 'equipment', price: 380, loc: 'Village Tool Bank C', img: 'images/equipment.png' },
+
+            { name: 'Rotavator - Shaktiman Regular Plus', type: 'equipment', price: 520, loc: 'Village Tool Bank A', img: 'images/equipment.png' },
+            { name: 'Rotavator - Maschio Gaspardo W125', type: 'equipment', price: 560, loc: 'Village Tool Bank B', img: 'images/equipment.png' },
+            { name: 'Rotavator - Fieldking FKRTSG', type: 'equipment', price: 500, loc: 'Village Tool Bank C', img: 'images/equipment.png' },
+
+            { name: 'Cultivator - 9 Tyne Spring Loaded', type: 'equipment', price: 460, loc: 'Village Tool Bank A', img: 'images/equipment.png' },
+            { name: 'Cultivator - 11 Tyne Rigid', type: 'equipment', price: 470, loc: 'Village Tool Bank B', img: 'images/equipment.png' },
+            { name: 'Cultivator - Duckfoot Heavy Duty', type: 'equipment', price: 440, loc: 'Village Tool Bank C', img: 'images/equipment.png' },
+
+            { name: 'Disc Harrow - Mounted 12 Disc', type: 'equipment', price: 390, loc: 'Village Tool Bank A', img: 'images/equipment.png' },
+            { name: 'Disc Harrow - Trailed 16 Disc', type: 'equipment', price: 420, loc: 'Village Tool Bank B', img: 'images/equipment.png' },
+            { name: 'Disc Harrow - Offset 14 Disc', type: 'equipment', price: 410, loc: 'Village Tool Bank C', img: 'images/equipment.png' },
+
+            { name: 'Plough - MB Plough 2 Bottom', type: 'equipment', price: 260, loc: 'Village Tool Bank A', img: 'images/equipment.png' },
+            { name: 'Plough - Disc Plough 3 Disc', type: 'equipment', price: 300, loc: 'Village Tool Bank B', img: 'images/equipment.png' },
+            { name: 'Plough - Reversible MB Plough', type: 'equipment', price: 320, loc: 'Village Tool Bank C', img: 'images/equipment.png' },
+
+            { name: 'Paddy Transplanter - Kubota NSP-4W', type: 'equipment', price: 650, loc: 'Village Tool Bank A', img: 'images/equipment.png' },
+            { name: 'Paddy Transplanter - Yanmar AP4', type: 'equipment', price: 680, loc: 'Village Tool Bank B', img: 'images/equipment.png' },
+            { name: 'Paddy Transplanter - VST Walk Behind', type: 'equipment', price: 620, loc: 'Village Tool Bank C', img: 'images/equipment.png' },
+
+            { name: 'Reaper - Self Propelled 1.2m', type: 'equipment', price: 720, loc: 'Village Tool Bank A', img: 'images/equipment.png' },
+            { name: 'Reaper - Vertical Conveyor Type', type: 'equipment', price: 760, loc: 'Village Tool Bank B', img: 'images/equipment.png' },
+            { name: 'Reaper - Mini Reaper Deluxe', type: 'equipment', price: 700, loc: 'Village Tool Bank C', img: 'images/equipment.png' },
+
+            { name: 'Threshing Machine - Wheat Axial Flow', type: 'equipment', price: 860, loc: 'Village Tool Bank A', img: 'images/equipment.png' },
+            { name: 'Threshing Machine - Paddy Drum Type', type: 'equipment', price: 840, loc: 'Village Tool Bank B', img: 'images/equipment.png' },
+            { name: 'Threshing Machine - Multi-Crop Turbo', type: 'equipment', price: 900, loc: 'Village Tool Bank C', img: 'images/equipment.png' }
+        ];
+
+        const ensureStmt = db.prepare(`
+            INSERT INTO equipment (name, type, price_per_hour, location, image_url)
+            SELECT ?, ?, ?, ?, ?
+            WHERE NOT EXISTS (
+                SELECT 1 FROM equipment WHERE type = ? AND name = ?
+            )
+        `);
+
+        farmEquipmentVariants.forEach(eq => {
+            ensureStmt.run([eq.name, eq.type, eq.price, eq.loc, eq.img, eq.type, eq.name]);
+        });
+        ensureStmt.finalize(() => {
+            console.log('Ensured farm equipment variants are present.');
+        });
     });
 }
 

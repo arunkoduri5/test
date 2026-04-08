@@ -10,25 +10,82 @@
 
     <h2 class="title">Farm Equipment</h2>
 
-    <div class="form">
-        <label>Equipment Target</label>
-        <select>
-            <option>Power Tiller</option>
-            <option>Seed Drill</option>
-            <option>Rotavator</option>
-            <option>Cultivator</option>
-            <option>Disc Harrow</option>
-            <option>Plough</option>
-            <option>Paddy Transplanter</option>
-            <option>Reaper</option>
-            <option>Threshing Machine</option>
-        </select>
+    <input id="equipmentTarget" type="hidden">
+    <div id="equipmentTargetCards" class="equipment-options">
+        <div class="card equipment-option" data-target="Power Tiller">
+            <div>
+                <h3>Power Tiller</h3>
+                <p>Compact tilling for small and medium farms.</p>
+            </div>
+            <button class="equipment-action" onclick="prepareEquipmentBooking('Power Tiller', this)">Book</button>
+        </div>
+        <div class="card equipment-option" data-target="Seed Drill">
+            <div>
+                <h3>Seed Drill</h3>
+                <p>Uniform seed placement with better coverage.</p>
+            </div>
+            <button class="equipment-action" onclick="prepareEquipmentBooking('Seed Drill', this)">Book</button>
+        </div>
+        <div class="card equipment-option" data-target="Rotavator">
+            <div>
+                <h3>Rotavator</h3>
+                <p>Fast soil preparation before sowing.</p>
+            </div>
+            <button class="equipment-action" onclick="prepareEquipmentBooking('Rotavator', this)">Book</button>
+        </div>
+        <div class="card equipment-option" data-target="Cultivator">
+            <div>
+                <h3>Cultivator</h3>
+                <p>Loosens soil and controls weeds effectively.</p>
+            </div>
+            <button class="equipment-action" onclick="prepareEquipmentBooking('Cultivator', this)">Book</button>
+        </div>
+        <div class="card equipment-option" data-target="Disc Harrow">
+            <div>
+                <h3>Disc Harrow</h3>
+                <p>Breaks clods and smooths field surface.</p>
+            </div>
+            <button class="equipment-action" onclick="prepareEquipmentBooking('Disc Harrow', this)">Book</button>
+        </div>
+        <div class="card equipment-option" data-target="Plough">
+            <div>
+                <h3>Plough</h3>
+                <p>Primary tillage for deeper soil turning.</p>
+            </div>
+            <button class="equipment-action" onclick="prepareEquipmentBooking('Plough', this)">Book</button>
+        </div>
+        <div class="card equipment-option" data-target="Paddy Transplanter">
+            <div>
+                <h3>Paddy Transplanter</h3>
+                <p>Speeds up paddy planting with consistency.</p>
+            </div>
+            <button class="equipment-action" onclick="prepareEquipmentBooking('Paddy Transplanter', this)">Book</button>
+        </div>
+        <div class="card equipment-option" data-target="Reaper">
+            <div>
+                <h3>Reaper</h3>
+                <p>Efficient crop cutting during harvest.</p>
+            </div>
+            <button class="equipment-action" onclick="prepareEquipmentBooking('Reaper', this)">Book</button>
+        </div>
+        <div class="card equipment-option" data-target="Threshing Machine">
+            <div>
+                <h3>Threshing Machine</h3>
+                <p>Quick grain separation from harvested crop.</p>
+            </div>
+            <button class="equipment-action" onclick="prepareEquipmentBooking('Threshing Machine', this)">Book</button>
+        </div>
+    </div>
 
+    <div id="equipmentBookingForm" class="form" style="display:none;">
+        <label>Selected Equipment</label>
+        <input id="selectedEquipmentName" type="text" readonly>
         <label>Farm Size (Acres)</label>
         <input id="acres" type="number" placeholder="Enter acres">
 
         <label>Required Date</label>
         <input id="date" type="date">
+        <small style="color:#64748b; margin-top:-10px;">dd-mm-yyyy</small>
 
         <button onclick="searchEquipment('equipment')">Search</button>
     </div>
