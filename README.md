@@ -25,7 +25,7 @@ Ready to deploy or test the agricultural booking software locally? Follow these 
 ### 1. Clone the Repository
 Open up your terminal/command prompt and clone down this project repository to your local system:
 ```bash
-git clone https://github.com/yourusername/farm-equipment-booking.git
+git clone https://github.com/arunkoduri5/test.git
 cd farm-equipment-booking
 ``` *(Note: Replace the GitHub link with your actual repo link once published).*
 

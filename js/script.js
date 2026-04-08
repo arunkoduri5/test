@@ -278,7 +278,7 @@ async function loadAccount() {
                     ${userName.substring(0, 1).toUpperCase() || 'U'}
                 </div>
                 <h3 style="margin-bottom: 4px; font-size: 22px;">${userName}</h3>
-                <p style="font-size: 14px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.5px; margin-bottom: 5px;">ðŸ“ ${userLocation}</p>
+                <p style="font-size: 14px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.5px; margin-bottom: 5px;">Location: ${userLocation}</p>
                 <p style="font-size: 16px; font-weight: 600; color: var(--text-main); font-family: monospace; letter-spacing: 1px;">+91 ${mobile}</p>
             </div>
             <div style="display: flex; justify-content: space-around; background: var(--bg-color); padding: 20px 15px; border-radius: 16px; margin-top: 10px; border: 1px solid #cbd5e1;">
