@@ -123,7 +123,11 @@ function searchEquipment(type) {
     
     const date = dateInput.value;
     const acres = acresInput ? acresInput.value : '';
-    const equipmentTarget = equipmentTargetInput ? equipmentTargetInput.value.trim() : '';
+    let equipmentTarget = equipmentTargetInput ? equipmentTargetInput.value.trim() : '';
+    if (type === "harvester") {
+        const harvesterCrop = document.getElementById("harvesterCrop");
+        equipmentTarget = harvesterCrop ? harvesterCrop.value.trim() : "";
+    }
     if (type === "equipment" && !equipmentTarget) {
         showToast("Please select equipment target");
         return;
@@ -154,7 +158,7 @@ async function loadResults() {
         list.innerHTML = "";
 
         let filteredEquipment = equipment;
-        if (target) {
+        if (target && type !== "harvester") {
             filteredEquipment = equipment.filter(machine =>
                 (machine.name || "").toLowerCase().includes(target)
             );
@@ -172,7 +176,6 @@ async function loadResults() {
                 <div style="flex:1;">
                     <h3>${machine.name}</h3>
                     <p>₹${machine.price_per_hour}/hour</p>
-                    <p>${machine.location}</p>
                 </div>
                 <button style="width: auto; padding: 12px 24px;" onclick="bookMachine(${machine.id}, '${date}', '${acres}')">Book</button>
             `;
@@ -246,6 +249,10 @@ async function bookMachine(equipmentId, date, acres) {
         return;
     }
 
+    const params = new URLSearchParams(window.location.search);
+    const bookingCategory = params.get("type") || "";
+    const bookingTarget = params.get("target") || "";
+
     try {
         const res = await fetch('/api/bookings', {
             method: 'POST',
@@ -254,7 +261,9 @@ async function bookMachine(equipmentId, date, acres) {
                 user_id: userId, 
                 equipment_id: equipmentId, 
                 acres: acres || 0, 
-                required_date: date 
+                required_date: date,
+                booking_category: bookingCategory,
+                booking_target: bookingTarget
             })
         });
         const data = await res.json();
@@ -291,9 +300,19 @@ async function loadBookings() {
         if (bookings.length > 0) {
             container.innerHTML = "";
             bookings.forEach(b => {
+                const bookingType = (b.booking_category || b.machine_type || "").trim();
+                const bookingTarget = (b.booking_target || "").trim();
+                const machineName = (b.machine || "").trim();
+                const bookingSummary = [bookingType, bookingTarget, machineName]
+                    .filter(Boolean)
+                    .join(" / ");
+
                 container.innerHTML += `
                 <div style="margin-bottom: 20px;">
+                    <p><b>Booking:</b> ${bookingSummary || machineName || "-"}</p>
                     <p><b>Machine:</b> ${b.machine}</p>
+                    <p><b>Category:</b> ${bookingType || "-"}</p>
+                    <p><b>Selected:</b> ${bookingTarget || "-"}</p>
                     <p><b>Mobile:</b> ${getMobile()}</p>
                     <p><b>Date:</b> ${b.required_date}</p>
                     <p><b>Farm Size:</b> ${b.acres || "-"} Acres</p>

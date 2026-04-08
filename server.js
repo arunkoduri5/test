@@ -52,14 +52,17 @@ app.get('/api/equipment', (req, res) => {
 
 // API: Create Booking
 app.post('/api/bookings', (req, res) => {
-    const { user_id, equipment_id, acres, required_date } = req.body;
+    const { user_id, equipment_id, acres, required_date, booking_category, booking_target } = req.body;
     
     if (!user_id || !equipment_id || !required_date) {
         return res.status(400).json({ error: 'Missing required booking fields' });
     }
 
-    const stmt = db.prepare(`INSERT INTO bookings (user_id, equipment_id, acres, required_date) VALUES (?, ?, ?, ?)`);
-    stmt.run([user_id, equipment_id, acres || null, required_date], function(err) {
+    const stmt = db.prepare(`
+        INSERT INTO bookings (user_id, equipment_id, acres, required_date, booking_category, booking_target)
+        VALUES (?, ?, ?, ?, ?, ?)
+    `);
+    stmt.run([user_id, equipment_id, acres || null, required_date, booking_category || null, booking_target || null], function(err) {
         if (err) return res.status(500).json({ error: err.message });
         res.json({ success: true, booking_id: this.lastID });
     });
@@ -71,7 +74,16 @@ app.get('/api/bookings/:userId', (req, res) => {
     const { userId } = req.params;
     
     const query = `
-        SELECT b.id, b.status, b.required_date, b.acres, e.name as machine, e.price_per_hour as rate 
+        SELECT
+            b.id,
+            b.status,
+            b.required_date,
+            b.acres,
+            b.booking_category,
+            b.booking_target,
+            e.name as machine,
+            e.type as machine_type,
+            e.price_per_hour as rate
         FROM bookings b 
         JOIN equipment e ON b.equipment_id = e.id 
         WHERE b.user_id = ? 

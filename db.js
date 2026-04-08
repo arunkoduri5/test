@@ -39,10 +39,24 @@ function initDb() {
             acres REAL,
             required_date TEXT NOT NULL,
             status TEXT DEFAULT 'Confirmed',
+            booking_category TEXT,
+            booking_target TEXT,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (user_id) REFERENCES users (id),
             FOREIGN KEY (equipment_id) REFERENCES equipment (id)
         )`);
+
+        // Backward-compatible schema upgrade for existing DBs.
+        db.run(`ALTER TABLE bookings ADD COLUMN booking_category TEXT`, (err) => {
+            if (err && !err.message.includes('duplicate column name')) {
+                console.error('Error adding booking_category column:', err.message);
+            }
+        });
+        db.run(`ALTER TABLE bookings ADD COLUMN booking_target TEXT`, (err) => {
+            if (err && !err.message.includes('duplicate column name')) {
+                console.error('Error adding booking_target column:', err.message);
+            }
+        });
 
         // Seed equipment table if empty
         db.get("SELECT COUNT(*) as count FROM equipment", (err, row) => {
@@ -50,8 +64,8 @@ function initDb() {
                 const equipmentList = [
                     { name: 'Mahindra Tractor', type: 'tractor', price: 800, loc: 'Village A', img: 'images/tractor.png' },
                     { name: 'Sonalika Tractor', type: 'tractor', price: 750, loc: 'Village B', img: 'images/tractor.png' },
-                    { name: 'Wheat Harvester', type: 'harvester', price: 1500, loc: 'Village C', img: 'images/harvester.png' },
-                    { name: 'Rice Harvester', type: 'harvester', price: 1400, loc: 'Village D', img: 'images/harvester.png' },
+                    { name: '4x4 Harvester', type: 'harvester', price: 1500, loc: 'Village C', img: 'images/harvester.png' },
+                    { name: 'Track Harvester', type: 'harvester', price: 1400, loc: 'Village D', img: 'images/harvester.png' },
                     { name: 'Sugarcane Cutter 1', type: 'sugarcane', price: 2000, loc: 'Village E', img: 'images/sugarcane.png' },
                     { name: 'Sugarcane Cutter 2', type: 'sugarcane', price: 2100, loc: 'Village F', img: 'images/sugarcane.png' },
                     { name: 'JCB Loader', type: 'jcb', price: 1800, loc: 'Village G', img: 'images/jcb.png' },
@@ -122,6 +136,21 @@ function initDb() {
         ensureStmt.finalize(() => {
             console.log('Ensured farm equipment variants are present.');
         });
+
+        // Normalize legacy harvester labels and ensure expected variants exist.
+        db.run(`UPDATE equipment SET name = '4x4 Harvester' WHERE type = 'harvester' AND LOWER(name) = 'rice harvester'`);
+        db.run(`UPDATE equipment SET name = 'Track Harvester' WHERE type = 'harvester' AND LOWER(name) = 'wheat harvester'`);
+
+        const ensureHarvesterStmt = db.prepare(`
+            INSERT INTO equipment (name, type, price_per_hour, location, image_url)
+            SELECT ?, 'harvester', ?, ?, ?
+            WHERE NOT EXISTS (
+                SELECT 1 FROM equipment WHERE type = 'harvester' AND LOWER(name) = LOWER(?)
+            )
+        `);
+        ensureHarvesterStmt.run(['4x4 Harvester', 1500, 'Village C', 'images/harvester.png', '4x4 Harvester']);
+        ensureHarvesterStmt.run(['Track Harvester', 1400, 'Village D', 'images/harvester.png', 'Track Harvester']);
+        ensureHarvesterStmt.finalize();
     });
 }
 
